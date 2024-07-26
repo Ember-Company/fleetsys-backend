@@ -12,22 +12,27 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('vehicles', function (Blueprint $table) {
-            $table->uuid();
-            $table->foreignUuid('company_id')->constrained();
+            $table->uuid('id')->primary();
+            $table->uuid('company_id');
+            $table->foreign('company_id')->references('id')->on('company')->constrained();
+            $table->unsignedBigInteger('fuel_type_id');
             $table->foreign('fuel_type_id')->references('id')->on('fuel')->constrained();
             $table->string('fuel_volume_units');
-            $table->foreignId('vehicle_type_id')->constrained();
+            $table->unsignedBigInteger('vehicle_type_id');
+            $table->foreign('vehicle_type_id')->references('id')->on('vehicle_type')->constrained();
             $table->string('name');
             $table->string('ownership');
             $table->string('system_of_measurement');
             $table->string('primary_meter_unit');
-            $table->foreignUuid('current_location_id')->constrained();
+            $table->uuid('current_location_id');
+            $table->foreign('current_location_id')->references('id')->on('current_location')->constrained();
             $table->string('primary_meter_value')->nullable();
             $table->string('primary_meter_updated')->nullable();
             $table->string('primary_meter_usage_per_day')->nullable();
             $table->string('secondary_meter_unit')->nullable();
             $table->string('secondary_meter_value')->nullable();
-            $table->foreignUuid('vehicle_status_id')->constrained();
+            $table->uuid('vehicle_status_id');
+            $table->foreign('vehicle_status_id')->references('id')->on('vehicle_status')->constrained();
             $table->string('secondary_meter_updated')->nullable();
             $table->string('secondary_meter_usage_per_day')->nullable();
             $table->string('in_service_meter_value')->nullable();
