@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('current_location', function (Blueprint $table) {
-            $table->uuid();
+            $table->uuid('id')->primary();
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);
             $table->timestamps();
