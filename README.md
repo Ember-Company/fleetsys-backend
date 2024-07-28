@@ -5,7 +5,7 @@ FleetSys is a API backend application for managing vehicle fleets. This project 
 ## Requirements
 
 - **PHP 8.3**
-- **Laravel 11**
+- **Composer**
 - **PostgreSQL 10 or above**
 
 ## How to Run
