@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\FuelType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,7 @@ class FuelFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->randomElement(\App\Enums\FuelType::cases())
+            'name' => fake()->randomElement(array_map(fn($case) => $case->name(), FuelType::cases())),
         ];
     }
 }
