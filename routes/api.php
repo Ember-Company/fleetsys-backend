@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CurrentLocationController;
 use App\Http\Controllers\FuelController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,4 +18,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function (){
     Route::resource('company', CompanyController::class)->except('edit','create');
     Route::resource('fuel', FuelController::class)->except('edit','create');
+    Route::resource('location', CurrentLocationController::class)->only('store', 'show');
 });
+
