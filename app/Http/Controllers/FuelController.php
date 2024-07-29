@@ -14,9 +14,22 @@ class FuelController extends Controller
      */
     public function index()
     {
-        //
+        try{
+            $fuel = Fuel::all();
+            return response()->json(['data' => $fuel], 200); 
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500); 
+        }
     }
 
+    public function show(Fuel $fuel)
+    {
+        try{
+            return response()->json(['data' => $fuel ], 200);
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -39,7 +52,14 @@ class FuelController extends Controller
      */
     public function update(UpdateFuelRequest $request, Fuel $fuel)
     {
-        //
+        try{
+            $data = $request->validated();
+            $fuel->update($data);
+            
+            return response()->json(['success' => 'Fuel data successfully updated' ], 200);
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -47,6 +67,11 @@ class FuelController extends Controller
      */
     public function destroy(Fuel $fuel)
     {
-        //
+        try{
+            $fuel->delete();
+            return response()->json(['success' => "Fuel ". $fuel->name." successfully removed" ], 200);
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
