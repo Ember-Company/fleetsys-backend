@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCurrentLocationRequest;
 use App\Http\Requests\UpdateCurrentLocationRequest;
 use App\Models\CurrentLocation;
+use Exception;
 
 class CurrentLocationController extends Controller
 {
@@ -13,7 +14,12 @@ class CurrentLocationController extends Controller
      */
     public function index()
     {
-        //
+        try{
+            $fuel = CurrentLocation::all();
+            return response()->json(['data' => $fuel], 200); 
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500); 
+        }
     }
 
     /**
@@ -21,7 +27,13 @@ class CurrentLocationController extends Controller
      */
     public function store(StoreCurrentLocationRequest $request)
     {
-        //
+        try{
+            $data = $request->validated();
+            CurrentLocation::create($data);
+    
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500); 
+        }
     }
 
     /**
@@ -29,6 +41,10 @@ class CurrentLocationController extends Controller
      */
     public function show(CurrentLocation $currentLocation)
     {
-        //
+        try{
+            return response()->json(['data' => $currentLocation ], 200);
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
