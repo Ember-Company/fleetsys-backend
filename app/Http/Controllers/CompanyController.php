@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
+use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use Exception;
 
@@ -14,13 +15,10 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        try{
-            $companies = Company::with('users')->get();
+        // Nao precisa try-catch, fiz um Exception Handler global pra resource not found, caso tiver um collection vazio o frontend vai tratar
+        $companies = Company::with('users')->get();
 
-            return response()->json(['data' => $companies], 200);
-        }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        return CompanyResource::collection($companies);
     }
 
     /**
