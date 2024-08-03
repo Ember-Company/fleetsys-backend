@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('industry');
-            $table->uuid('company_id');
-            $table->foreign('company_id')->references('id')->on('company')->constrained();
-            $table->foreignId('role_id')->constrained();
+            $table->string('industry')->default('Logistics');
+            // $table->uuid('company_id');
+            $table->foreignUuid('company_id')->constrained();
+            $table->foreignId('role_id')->nullable()->constrained();
             $table->string('phone_number')->nullable();
             $table->string('city')->nullable();
             $table->string('region')->nullable();
@@ -41,7 +41,7 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->foreignUuid('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
