@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('industry');
-            $table->uuid('company_id');
-            $table->foreign('company_id')->references('id')->on('company')->constrained();
-            $table->foreignId('role_id')->constrained();
+            $table->string('industry')->default('Logistics');
+            // $table->uuid('company_id');
+            $table->foreignUuid('company_id')->constrained();
+            $table->foreignId('role_id')->nullable()->constrained();
             $table->string('phone_number')->nullable();
             $table->string('city')->nullable();
             $table->string('region')->nullable();
