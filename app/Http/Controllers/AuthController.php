@@ -13,19 +13,15 @@ class AuthController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',
         ]);
 
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
-        ]);
+        $user = User::create($validatedData);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken($request->name)->plainTextToken;
 
-        return response()->json(['access_token' => $token,'token_type' => 'Bearer'], 200);
+        return response()->json(['access_token' => $token,'token_type' => 'Bearer', 'user' => $user], 200);
     }
 
     public function login(Request $request)
@@ -34,14 +30,21 @@ class AuthController extends Controller
             return response()->json([
             'message' => 'Invalid login details'], 401);
         }
-        
+
         $user = User::where('email', $request['email'])->firstOrFail();
-        
+
         $token = $user->createToken('auth_token')->plainTextToken;
-        
+
         return response()->json([
                 'access_token' => $token,
                 'token_type' => 'Bearer',
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+
+        return response()->noContent();
     }
 }

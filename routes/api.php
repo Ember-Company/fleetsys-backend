@@ -17,7 +17,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function (){
-    Route::resource('company', CompanyController::class)->except('edit','create');
+    Route::apiResource('companies', CompanyController::class);
     Route::resource('fuel', FuelController::class)->except('edit','create');
     Route::resource('location', CurrentLocationController::class)->only('store', 'show');
     Route::resource('driver', DriverController::class)->except('edit', 'create');
