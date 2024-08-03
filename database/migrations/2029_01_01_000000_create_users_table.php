@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +22,11 @@ return new class extends Migration
             // $table->uuid('company_id');
             $table->foreignUuid('company_id')->constrained();
             $table->foreignId('role_id')->nullable()->constrained();
+
+            // $table->unsignedInteger('role');
+            $table->unsignedInteger('role')->default(UserRole::USER);
+
+
             $table->string('phone_number')->nullable();
             $table->string('city')->nullable();
             $table->string('region')->nullable();
