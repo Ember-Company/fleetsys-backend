@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AuthRegisterRequest extends FormRequest
 {
@@ -17,6 +19,7 @@ class AuthRegisterRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',
+            'role' => ['sometimes', Rule::in(array_column(UserRole::cases(), 'value'))]
         ];
     }
 }

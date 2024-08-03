@@ -24,7 +24,7 @@ class AuthController extends Controller
             throw new BadRequestHttpException('Missing required company parameter');
         }
 
-        $company = $company_query->where('id', $request->query('company'))->first();
+        $company = $company_query->where('id', $request->query('company'))->firstOrFail();
         $this->authorize('is-member', $company); // if the current user and the new user are from the same company allow user creation
 
         $user = User::create([
@@ -53,6 +53,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->firstOrFail();
 
+        $user->load('company');
         $token = $user->createToken($user->name)->plainTextToken;
 
         return response()->json([

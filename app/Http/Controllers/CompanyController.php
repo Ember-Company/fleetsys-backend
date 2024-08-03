@@ -15,11 +15,11 @@ class CompanyController extends Controller
     public function index()
     {
         try{
-            $companies = Company::all();
-        
-            return response()->json(['data' => $companies], 200); 
+            $companies = Company::with('users')->get();
+
+            return response()->json(['data' => $companies], 200);
         }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500); 
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -29,7 +29,7 @@ class CompanyController extends Controller
     public function store(StoreCompanyRequest $request)
      {
         try{
-            $data = $request->validated(); 
+            $data = $request->validated();
             Company::create($data);
 
             return response()->json(['success' => 'Company successfully created'], 200);
@@ -58,14 +58,14 @@ class CompanyController extends Controller
         try{
             $data = $request->validated();
             $company->update($data);
-            
+
             return response()->json(['success' => 'Company data successfully updated' ], 200);
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-        
-    
+
+
 
     /**
      * Remove the specified resource from storage.

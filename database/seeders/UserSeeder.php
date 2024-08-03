@@ -16,8 +16,9 @@ class UserSeeder extends Seeder
 
         foreach ($companies as $company)
         {
-            \App\Models\User::factory(3)->create([
-                'company_id' => $company->id
+            \App\Models\User::factory(1)->create([
+                'company_id' => $company->id,
+                'role' => 1
             ]);
         }
     }
