@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Http\Resources\CompanyResource;
+use Illuminate\Support\Str;
 use App\Models\Company;
+use App\Models\User;
 use Exception;
 
 class CompanyController extends Controller
@@ -26,14 +28,19 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request)
      {
-        try{
-            $data = $request->validated();
-            Company::create($data);
+        $data = $request->validated();
 
-            return response()->json(['success' => 'Company successfully created'], 200);
-        }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $company = Company::create($data);
+
+        User::create([
+            'name' => 'admin-' . $company->name,
+            'email' => 'admin@' . Str::lower($company->name) . '.com',
+            'password' => 'admin123',
+            'company_id' => $company->id,
+            'role' => 1 // admin
+        ]);
+
+        return new CompanyResource($company);
     }
 
     /**
