@@ -53,6 +53,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function isMaster(): bool
+    {
+        return $this->role === UserRole::MASTER;
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === UserRole::ADMIN;
