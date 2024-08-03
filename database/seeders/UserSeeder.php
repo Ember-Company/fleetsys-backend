@@ -14,17 +14,11 @@ class UserSeeder extends Seeder
     public function run(): void
     {
 
-        $company = \App\Models\Company::where('name', 'Master')->first();
+        $company = \App\Models\Company::where('name', 'Master Company')->first();
 
         if($company)
         {
-            \App\Models\User::create([
-                'name' => 'MasterUser',
-                'email' => 'master@user.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('password'),
-                'remember_token' => Str::random(10),
-
+            \App\Models\User::factory()->create([
                 'company_id' => $company->id,
                 'role' => 0
             ]);
