@@ -25,7 +25,7 @@ class AuthController extends Controller
         }
 
         $company = $company_query->where('id', $request->query('company'))->firstOrFail();
-        $this->authorize('is-member', $company); // if the current user and the new user are from the same company allow user creation
+        $this->authorize('admin-action', $company); // if the current user and the new user are from the same company  and is the admin allow user creation
 
         $user = User::create([
             ...$request->validated(),
@@ -35,9 +35,6 @@ class AuthController extends Controller
         return response()->json([
             'user' => $user
         ], 200);
-
-        // $token = $user->createToken($request->name)->plainTextToken;
-        // return response()->json(['access_token' => $token,'token_type' => 'Bearer', 'user' => $user], 200);
     }
 
     public function login(AuthLoginRequest $request)
