@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('industry')->default('Logistics');
             // $table->uuid('company_id');
-            $table->foreignUuid('company_id')->constrained();
+            $table->foreignUuid('company_id')->constrained()->cascadeOnDelete();
             $table->foreignId('role_id')->nullable()->constrained();
 
             // $table->unsignedInteger('role');

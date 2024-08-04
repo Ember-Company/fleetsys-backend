@@ -59,7 +59,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        $company->load(['user']);
+        $company->load(['users']);
 
         return new CompanyResource($company);
     }
