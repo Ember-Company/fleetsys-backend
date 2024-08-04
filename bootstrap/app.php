@@ -17,12 +17,21 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+        $exceptions->render(function (Exception $e, Request $request) {
             if ($request->wantsJson())
             {
-                return response()->json([
-                    'error' => 'Resource not found'
-                ], $e->getStatusCode());
+                switch ($e)
+                {
+                    case $e instanceof NotFoundHttpException:
+                        return response()->json([
+                            'error' => 'Resource not found'
+                        ], $e->getStatusCode());
+
+                    default:
+                        return response()->json([
+                            'error' => $e->getMessage()
+                        ], 500);
+                }
             }
         });
     })->create();
