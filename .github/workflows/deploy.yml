@@ -23,10 +23,6 @@ jobs:
     - name: Run migrations
       run: php artisan migrate --force
 
-    - name: Sync files to server
-      run: |
-        rsync -avz --exclude=node_modules --exclude=.git --exclude=vendor ./ <USERNAME>@<VM_IP_ADDRESS>:/path/to/your/app
-
     - name: SSH to server and set up
       uses: appleboy/ssh-action@master
       with:
