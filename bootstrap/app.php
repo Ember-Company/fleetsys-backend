@@ -27,10 +27,10 @@ return Application::configure(basePath: dirname(__DIR__))
                             'error' => 'Resource not found'
                         ], $e->getStatusCode());
 
-                    default:
-                        return response()->json([
-                            'error' => $e->getMessage()
-                        ], 500);
+                    // default:
+                    //     return response()->json([
+                    //         'error' => $e->getMessage()
+                    //     ], $e);
                 }
             }
         });
