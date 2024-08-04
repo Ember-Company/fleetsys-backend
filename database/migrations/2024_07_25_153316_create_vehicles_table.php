@@ -1,5 +1,11 @@
 <?php
 
+use App\Enums\FuelType;
+use App\Enums\FuelVolumeUnit;
+use App\Enums\MeasurementSystem;
+use App\Enums\MeterUnit;
+use App\Enums\VehicleOwnership;
+use App\Enums\VehicleStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,54 +19,59 @@ return new class extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            // $table->uuid('company_id');
-            $table->foreignUuid('company_id')->constrained();
-            $table->unsignedBigInteger('fuel_type_id');
-            $table->foreign('fuel_type_id')->references('id')->on('fuel')->constrained();
-            $table->string('fuel_volume_units');
-            $table->unsignedBigInteger('vehicle_type_id');
-            $table->foreign('vehicle_type_id')->references('id')->on('vehicle_type')->constrained();
+
+            $table->foreignUuid('company_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('vehicle_type_id')->constrained();
+            $table->foreignUuid('vehicle_status_id')->constrained();
+
+            $table->foreignUuid('current_location_id')->nullable()->constrained()->nullOnDelete();
+
+            $table->unsignedInteger('fuel_volume_unit')->default(FuelVolumeUnit::LITERS);
+            $table->unsignedInteger('fuel_type')->default(FuelType::Diesel);
+            $table->unsignedInteger('system_of_measurement')->default(MeasurementSystem::METRIC);
+            $table->unsignedInteger('primary_meter_unit')->default(MeterUnit::KILOMETER);
+            $table->unsignedInteger('ownership')->default(VehicleOwnership::OWNED);
+
             $table->string('name');
-            $table->string('ownership');
-            $table->string('system_of_measurement');
-            $table->string('primary_meter_unit');
-            $table->uuid('current_location_id');
-            $table->foreign('current_location_id')->references('id')->on('current_location')->constrained();
-            $table->string('primary_meter_value')->nullable();
-            $table->string('primary_meter_updated')->nullable();
-            $table->string('primary_meter_usage_per_day')->nullable();
-            $table->string('secondary_meter_unit')->nullable();
-            $table->string('secondary_meter_value')->nullable();
-            $table->uuid('vehicle_status_id');
-            $table->foreign('vehicle_status_id')->references('id')->on('vehicle_status')->constrained();
-            $table->string('secondary_meter_updated')->nullable();
-            $table->string('secondary_meter_usage_per_day')->nullable();
+
+            // $table->year('vehicle_model_year');
+
+            $table->bigInteger('primary_meter_value')->nullable();
+            $table->bigInteger('primary_meter_usage_per_day')->nullable();
+
             $table->string('in_service_meter_value')->nullable();
             $table->dateTime('in_service_date')->nullable();
             $table->string('out_of_service_meter_value')->nullable();
             $table->dateTime('out_of_service_date')->nullable();
+
             $table->integer('estimated_service_months')->nullable();
             $table->string('estimated_replacement_mileage')->nullable();
             $table->integer('estimated_resale_price_cents')->nullable();
+
             $table->integer('fuel_entries_count')->default(0);
             $table->integer('service_entries_count')->default(0);
             $table->integer('service_reminders_count')->default(0);
             $table->integer('vehicle_renewal_reminders_count')->default(0);
+
+            $table->string('color')->nullable();
+            $table->string('license_plate')->nullable();
+            $table->string('vin')->nullable();
+            $table->year('year')->nullable();
+            $table->string('make')->nullable();
+            $table->string('model')->nullable();
+            $table->string('trim')->nullable();
+
             $table->integer('documents_count')->default(0);
             $table->integer('images_count')->default(0);
             $table->integer('issues_count')->default(0);
             $table->integer('work_orders_count')->default(0);
-            $table->string('group_ancestry')->nullable();
-            $table->string('color')->nullable();
-            $table->string('license_plate')->nullable();
-            $table->string('vin')->nullable();
-            $table->string('year')->nullable();
-            $table->string('make')->nullable();
-            $table->string('model')->nullable();
-            $table->string('trim')->nullable();
-            $table->integer('registration_expiration_month');
+
+
+            $table->integer('registration_expiration_month')->nullable();
             $table->string('registration_state')->nullable();
             $table->string('default_image_url_small')->nullable();
+
+
             $table->string('loan_account_number')->nullable();
             $table->dateTime('loan_ended_at')->nullable();
             $table->string('loan_interest_rate')->nullable();
@@ -70,8 +81,9 @@ return new class extends Migration
             $table->string('loan_vendor_name')->nullable();
             $table->integer('inspection_schedules_count')->default(0);
             $table->json('specs')->nullable();
-            $table->foreignUuid('driver_id')->constrained();
             $table->string('default_img_url')->nullable();
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

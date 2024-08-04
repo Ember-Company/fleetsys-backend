@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicle_type', function (Blueprint $table) {
-            $table->id();
+        Schema::create('vehicle_types', function (Blueprint $table) {
+            $table->uuid('id')->primary();
             $table->string('name');
+
+            $table->timestamps();
         });
     }
 

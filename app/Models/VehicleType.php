@@ -5,22 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Company extends Model
+class VehicleType extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $table = 'companies';
-
-    protected $fillable = ['name', 'created_at'];
-
-    protected $casts = ['id' => 'string'];
-
-    public function users(): HasMany
-    {
-        return $this->hasMany(User::class);
-    }
+    protected $table = 'vehicle_types';
 
     public function vehicles(): HasMany
     {
