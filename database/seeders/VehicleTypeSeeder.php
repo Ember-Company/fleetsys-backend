@@ -20,11 +20,18 @@ class VehicleTypeSeeder extends Seeder
             'truck'
         ];
 
-        foreach ($vehicle_types as $type)
+        $companies = \App\Models\Company::all();
+
+        foreach ($companies as $company)
         {
-            VehicleType::create([
-                'name' => $type
-            ]);
+            foreach ($vehicle_types as $type)
+            {
+                $company->vehicleTypes()->create([
+                    'name' => $type
+                ]);
+            }
         }
+
+
     }
 }

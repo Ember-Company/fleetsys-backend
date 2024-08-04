@@ -16,11 +16,17 @@ class VehicleType extends Model
     protected $table = 'vehicle_types';
 
     protected $fillable = [
-        'name'
+        'name',
+        'company_id'
     ];
 
     public function vehicles(): HasMany
     {
         return $this->hasMany(Vehicle::class);
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 }

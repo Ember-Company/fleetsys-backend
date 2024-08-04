@@ -22,12 +22,19 @@ class VehicleStatusSeeder extends Seeder
             ['name' => 'Sold', 'status_color' => '#6c757d'], // Gray
         ];
 
-        foreach ($statuses as $st)
+        $companies = \App\Models\Company::all();
+
+        foreach ($companies as $company)
         {
-            VehicleStatus::create([
-                'name' => $st['name'],
-                'status_color' => $st['status_color']
-            ]);
+            foreach ($statuses as $st)
+            {
+                $company->vehicleStatuses()->create([
+                    'name' => $st['name'],
+                    'status_color' => $st['status_color']
+                ]);
+            }
         }
+
+
     }
 }

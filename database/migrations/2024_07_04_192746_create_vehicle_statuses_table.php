@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('vehicle_statuses', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
+            $table->foreignUuid('company_id')->constrained();
+
             $table->string('name');
             $table->string('status_color');
 
