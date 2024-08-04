@@ -2,25 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
+use App\Http\Resources\CompanyResource;
+use Illuminate\Support\Str;
 use App\Models\Company;
+use App\Models\User;
 use Exception;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Company::class);
+    }
+
     /**
+     *
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        try{
-            $companies = Company::with('users')->get();
+        // Nao precisa try-catch, fiz um Exception Handler global pra resource not found, caso tiver um collection vazio o frontend vai tratar
+        $companies = Company::with('users')->get();
 
-            return response()->json(['data' => $companies], 200);
-        }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        return CompanyResource::collection($companies);
     }
 
     /**
@@ -28,14 +39,19 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request)
      {
-        try{
-            $data = $request->validated();
-            Company::create($data);
+        $data = $request->validated();
 
-            return response()->json(['success' => 'Company successfully created'], 200);
-        }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $company = Company::create($data);
+
+        User::create([
+            'name' => 'admin-' . $company->name,
+            'email' => 'admin@' . Str::lower($company->name) . '.com',
+            'password' => 'admin123',
+            'company_id' => $company->id,
+            'role' => UserRole::ADMIN
+        ]);
+
+        return new CompanyResource($company);
     }
 
     /**
@@ -43,11 +59,9 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        try{
-            return response()->json(['data' => $company ], 200);
-        }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $company->load(['user']);
+
+        return new CompanyResource($company);
     }
 
     /**
@@ -55,28 +69,20 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompanyRequest $request, Company $company)
     {
-        try{
-            $data = $request->validated();
-            $company->update($data);
+        $data = $request->validated();
+        $updated_company = $company->update($data);
 
-            return response()->json(['success' => 'Company data successfully updated' ], 200);
-        }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        return new CompanyResource($updated_company);
     }
-
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Company $company)
     {
-        try{
-            $company->delete();
-            return response()->json(['success' => "Company " . $company->name." successfully removed" ], 200);
-        }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        // switch to soft delete, cascadeOnDelete to soft delete it's users
+        $company->delete();
+
+        return response()->noContent();
     }
 }
