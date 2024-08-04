@@ -1,9 +1,11 @@
 <?php
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -27,9 +29,18 @@ return Application::configure(basePath: dirname(__DIR__))
                             'error' => 'Resource not found'
                         ], $e->getStatusCode());
 
-                    default:
+                    case $e instanceof AuthenticationException:
+                        return null;
+
+                    case $e instanceof HttpException:
                         return response()->json([
                             'error' => $e->getMessage()
+                        ], $e->getStatusCode());
+
+                    default:
+                        return response()->json([
+                            'error' => 'Internal Server Error',
+                            'message' => $e->getMessage()
                         ], 500);
                 }
             }
