@@ -31,6 +31,7 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           cd /var/www/fleetsys-backend
+          git pull origin main
           composer install --no-interaction --prefer-dist --optimize-autoloader
           php artisan migrate --force
           php artisan config:cache
