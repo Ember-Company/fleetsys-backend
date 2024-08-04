@@ -14,6 +14,11 @@ class VehicleStatus extends Model
 
     protected $table = 'vehicle_statuses';
 
+    protected $fillable = [
+        'name',
+        'status_color'
+    ];
+
     public function vehicles(): HasMany
     {
         return $this->hasMany(Vehicle::class);

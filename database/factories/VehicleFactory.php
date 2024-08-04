@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\VehicleType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,14 @@ class VehicleFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->word(),
+            'color' => fake()->colorName(),
+            'year' => fake()->year(),
+            'license_plate' => fake()->text(6),
+            'make' => fake()->word(),
+            'model' => fake()->word(),
+            'vin' => fake()->randomNumber(),
+            'vehicle_type_id' => VehicleType::all()->first()->id
         ];
     }
 }
