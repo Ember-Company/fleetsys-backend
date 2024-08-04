@@ -1,0 +1,43 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+
+    - name: Install Composer dependencies
+      run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+    - name: Run migrations
+      run: php artisan migrate --force
+
+    - name: Sync files to server
+      run: |
+        rsync -avz --exclude=node_modules --exclude=.git --exclude=vendor ./ <USERNAME>@<VM_IP_ADDRESS>:/path/to/your/app
+
+    - name: SSH to server and set up
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          cd /var/www/fleetsys-backend
+          composer install --no-interaction --prefer-dist --optimize-autoloader
+          php artisan migrate --force
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+          sudo service nginx restart
