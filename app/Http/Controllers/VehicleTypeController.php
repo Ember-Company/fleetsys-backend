@@ -5,16 +5,26 @@ namespace App\Http\Controllers;
 use App\Http\Resources\StandardResource;
 use App\Models\Vehicle;
 use App\Models\VehicleType;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class VehicleTypeController extends Controller
 {
+
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        return $this->authorizeResource(VehicleType::class);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $vehicle_types = VehicleType::with(['vehicles'])->whereBelongsTo($request->user()->company)->get();
+        $vehicle_types = VehicleType::with(['vehicles'])->whereBelongsTo($request->user()->company)->get()->sortDesc();
         // $vehicle_types = VehicleType::with(['vehicles'])->get();
 
         return StandardResource::collection($vehicle_types);
@@ -28,7 +38,14 @@ class VehicleTypeController extends Controller
         $company = $request->user()->company;
 
         $vehicleType = VehicleType::create([
-            ...$request->validate(['name' => 'required|unique:vehicle_types,name']),
+            ...$request->validate([
+                'name' => [
+                    'required',
+                    Rule::unique('vehicle_types')->where(function ($query) use ($request) {
+                        return $query->where('company_id', $request->user()->company->id);
+                    }),
+                ],
+            ]),
             'company_id' => $company->id
         ]);
 
