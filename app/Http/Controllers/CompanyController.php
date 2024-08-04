@@ -9,13 +9,23 @@ use Illuminate\Support\Str;
 use App\Models\Company;
 use App\Models\User;
 use Exception;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Company::class);
+    }
+
     /**
+     *
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // Nao precisa try-catch, fiz um Exception Handler global pra resource not found, caso tiver um collection vazio o frontend vai tratar
         $companies = Company::with('users')->get();

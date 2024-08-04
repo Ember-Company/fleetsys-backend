@@ -4,10 +4,14 @@ namespace App\Policies;
 
 use App\Models\Company;
 use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 
 class CompanyPolicy
 {
+    use HandlesAuthorization;
+
     /**
      * Determine whether the user can view any models.
      */
@@ -21,7 +25,8 @@ class CompanyPolicy
      */
     public function view(User $user, Company $company): bool
     {
-        return $user->isMaster();
+        return Gate::allows('admin-action', $company);
+        // return $user->isMaster();
     }
 
     /**
@@ -37,7 +42,7 @@ class CompanyPolicy
      */
     public function update(User $user, Company $company): bool
     {
-        return $user->isMaster();
+        return Gate::allows('admin-action', $company);
     }
 
     /**
@@ -46,21 +51,5 @@ class CompanyPolicy
     public function delete(User $user, Company $company): bool
     {
         return $user->isMaster();
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Company $company): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Company $company): bool
-    {
-        //
     }
 }
