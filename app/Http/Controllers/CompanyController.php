@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Http\Resources\CompanyResource;
@@ -47,7 +48,7 @@ class CompanyController extends Controller
             'email' => 'admin@' . Str::lower($company->name) . '.com',
             'password' => 'admin123',
             'company_id' => $company->id,
-            'role' => 1 // admin
+            'role' => UserRole::ADMIN
         ]);
 
         return new CompanyResource($company);
@@ -58,11 +59,9 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        try{
-            return response()->json(['data' => $company ], 200);
-        }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $company->load(['user']);
+
+        return new CompanyResource($company);
     }
 
     /**
@@ -70,28 +69,20 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompanyRequest $request, Company $company)
     {
-        try{
-            $data = $request->validated();
-            $company->update($data);
+        $data = $request->validated();
+        $updated_company = $company->update($data);
 
-            return response()->json(['success' => 'Company data successfully updated' ], 200);
-        }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        return new CompanyResource($updated_company);
     }
-
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Company $company)
     {
-        try{
-            $company->delete();
-            return response()->json(['success' => "Company " . $company->name." successfully removed" ], 200);
-        }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        // switch to soft delete, cascadeOnDelete to soft delete it's users
+        $company->delete();
+
+        return response()->noContent();
     }
 }
