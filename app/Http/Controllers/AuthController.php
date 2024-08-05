@@ -27,16 +27,10 @@ class AuthController extends Controller
         $company = $company_query->where('id', $request->query('company'))->firstOrFail();
         $this->authorize('admin-action', $company); // if the current user and the new user are from the same company  and is the admin allow user creation
 
-        $user_data = $request->validated();
-        $profile_metadata = $user_data['user_meta'];
-        unset($user_data['user_meta']);
-
         $user = User::create([
-            ...$user_data,
+            ...$request->validated(),
             'company_id' => $request->user()->company->id
         ]);
-
-        $user->profile()->create($profile_metadata);
 
         return response()->json([
             'user' => $user
