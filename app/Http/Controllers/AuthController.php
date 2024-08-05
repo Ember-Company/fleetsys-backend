@@ -34,6 +34,7 @@ class AuthController extends Controller
             ...$request->validated(),
             'company_id' => $selected_company->id
         ]);
+        $user->profile()->create($request->getUserMeta());
 
         return response()->json([
             'user' => $user

@@ -3,22 +3,12 @@
 namespace App\Http\Requests;
 
 use App\Enums\UserRole;
-use App\Traits\ValidatesUniques;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class AuthRegisterRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
-    use ValidatesUniques;
-
-    protected $company;
-
-    public function __construct(\App\Models\Company $company=null)
-    {
-        parent::__construct();
-        $this->company = $company;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,22 +17,21 @@ class AuthRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'sometimes|string|max:255',
             'email' => [
-                'required',
+                'sometimes',
                 'email',
                 'string',
                 'unique:users,email'
             ],
-            'password' => 'required|string|min:8',
             'role' => ['sometimes', Rule::in(array_column(UserRole::cases(), 'value'))],
 
             // User profile
-            'user_meta' => 'required|array',
-            'user_meta.industry' => 'nullable|string',
-            'user_meta.city' => 'nullable|string',
-            'user_meta.region' => 'nullable|string',
-            'user_meta.country' => 'nullable|string'
+            'user_meta' => 'sometimes|array',
+            'user_meta.industry' => 'sometimes|string',
+            'user_meta.city' => 'sometimes|string',
+            'user_meta.region' => 'sometimes|string',
+            'user_meta.country' => 'sometimes|string'
         ];
     }
 

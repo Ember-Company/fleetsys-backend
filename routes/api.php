@@ -5,6 +5,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CurrentLocationController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\FuelController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\VehicleStatusController;
 use App\Http\Controllers\VehicleTypeController;
@@ -20,7 +21,8 @@ Route::post('/register', [AuthController::class, 'register'])->middleware('auth:
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::middleware('auth:sanctum')->group(function (){
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('users', UserController::class)->except('store');
     Route::apiResource('companies', CompanyController::class);
     Route::apiResource('vehicle-types', VehicleTypeController::class);
     Route::apiResource('vehicles', VehicleController::class);
