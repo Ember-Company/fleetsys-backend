@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\StandardResource;
-use App\Models\Vehicle;
 use App\Models\VehicleType;
+use App\Traits\ValidatesUniques;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 class VehicleTypeController extends Controller
 {
 
-    use AuthorizesRequests;
+    use AuthorizesRequests, ValidatesUniques;
 
     public function __construct()
     {
@@ -41,9 +41,7 @@ class VehicleTypeController extends Controller
             ...$request->validate([
                 'name' => [
                     'required',
-                    Rule::unique('vehicle_types')->where(function ($query) use ($request) {
-                        return $query->where('company_id', $request->user()->company->id);
-                    }),
+                    $this->uniqueWithCompany('vehicle_types', 'name', $company)
                 ],
             ]),
             'company_id' => $company->id
@@ -68,7 +66,12 @@ class VehicleTypeController extends Controller
     public function update(Request $request, VehicleType $vehicleType)
     {
         $vehicleType->update([
-            ...$request->validate(['name' => 'sometimes|unique:vehicle_types,name'])
+            ...$request->validate([
+                'name' => [
+                    'sometimes',
+                    $this->uniqueWithCompany('vehicle_types', 'name', $vehicleType->company)
+                ]
+            ])
         ]);
 
         return new StandardResource($vehicleType);
