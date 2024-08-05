@@ -29,7 +29,7 @@ class UserPolicy
      */
     public function update(User $user, User $targetUser): bool
     {
-        return $user->id === $targetUser->id;
+        return $user->id === $targetUser->id || Gate::allows('is-company-member') && $user->isAdmin();
     }
 
     public function delete(User $user, User $targetUser): bool

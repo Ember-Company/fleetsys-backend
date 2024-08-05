@@ -24,9 +24,6 @@ class UpdateUserRequest extends FormRequest
                 'string',
                 'unique:users,email'
             ],
-            'role' => ['sometimes', Rule::in(array_column(UserRole::cases(), 'value'))],
-
-            // User profile
             'user_meta' => 'sometimes|array',
             'user_meta.industry' => 'sometimes|string',
             'user_meta.city' => 'sometimes|string',
