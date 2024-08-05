@@ -17,7 +17,8 @@ class VehicleStatus extends Model
 
     protected $fillable = [
         'name',
-        'status_color'
+        'status_color',
+        'company_id'
     ];
 
     public function vehicles(): HasMany
