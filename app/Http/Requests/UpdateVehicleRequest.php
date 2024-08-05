@@ -23,7 +23,7 @@ class UpdateVehicleRequest extends FormRequest
         return [
             'name' => [
                 'sometimes',
-                $this->uniqueWithCompany('vehicles', 'name', $this->user()->company)
+                $this->uniqueWithCompany('vehicles', 'name')
             ],
             'vehicle_type_id' => 'sometimes|uuid|exists:vehicle_types,id',
             'vehicle_status_id' => 'sometimes|uuid|exists:vehicle_statuses,id',

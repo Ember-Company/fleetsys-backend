@@ -41,7 +41,7 @@ class VehicleTypeController extends Controller
             ...$request->validate([
                 'name' => [
                     'required',
-                    $this->uniqueWithCompany('vehicle_types', 'name', $company)
+                    $this->uniqueWithCompany('vehicle_types', 'name')
                 ],
             ]),
         ]);
@@ -68,7 +68,7 @@ class VehicleTypeController extends Controller
             ...$request->validate([
                 'name' => [
                     'sometimes',
-                    $this->uniqueWithCompany('vehicle_types', 'name', $vehicleType->company)
+                    $this->uniqueWithCompany('vehicle_types', 'name')
                 ]
             ])
         ]);

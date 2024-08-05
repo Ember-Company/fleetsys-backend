@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
 
@@ -13,12 +14,13 @@ trait ValidatesUniques
      *
      * @param  string  $table
      * @param  string  $column
-     * @param  \App\Models\Company $company
      * @return \Illuminate\Validation\Rules\Unique
      */
-    public function uniqueWithCompany(string $table, string $column, \App\Models\Company $company): Unique
+    public function uniqueWithCompany(string $table, string $column): Unique
     {
-        return Rule::unique($table, $column, $company)->where(function ($query) use ($company) {
+        $company = Auth::user()->company;
+
+        return Rule::unique($table, $column)->where(function ($query) use ($company) {
             return $query->where('company_id', $company->id);
         })->ignore(null);
     }

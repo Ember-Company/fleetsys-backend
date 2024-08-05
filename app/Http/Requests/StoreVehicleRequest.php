@@ -11,7 +11,7 @@ use Illuminate\Validation\Rules\Enum;
 
 class StoreVehicleRequest extends FormRequest
 {
-    use ValidatesUniques;
+    // use ValidatesUniques;
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,7 +23,7 @@ class StoreVehicleRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                $this->uniqueWithCompany('vehicles', 'name', $this->user()->company)
+                $this->uniqueWithCompany('vehicles', 'name')
             ],
             'vehicle_type_id' => 'required|uuid|exists:vehicle_types,id',
             'vehicle_status_id' => 'required|uuid|exists:vehicle_statuses,id',

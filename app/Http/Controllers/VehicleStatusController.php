@@ -39,7 +39,7 @@ class VehicleStatusController extends Controller
                 'status_color' => 'required|string|max:7',
                 'name' => [
                     'required',
-                    $this->uniqueWithCompany('vehicle_statuses', 'name', $company)
+                    $this->uniqueWithCompany('vehicle_statuses', 'name')
                 ],
             ]),
         ]);
@@ -69,7 +69,7 @@ class VehicleStatusController extends Controller
                 'status_color' => 'sometimes|max:7',
                 'name' => [
                     'sometimes',
-                    $this->uniqueWithCompany('vehicle_statuses', 'name', $company)
+                    $this->uniqueWithCompany('vehicle_statuses', 'name')
                 ]
             ])
         ]);
