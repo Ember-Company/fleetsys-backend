@@ -7,7 +7,6 @@ use App\Models\VehicleType;
 use App\Traits\ValidatesUniques;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class VehicleTypeController extends Controller
 {
@@ -24,7 +23,8 @@ class VehicleTypeController extends Controller
      */
     public function index(Request $request)
     {
-        $vehicle_types = VehicleType::with(['vehicles'])->whereBelongsTo($request->user()->company)->get()->sortDesc();
+        $company = $request->user()->company;
+        $vehicle_types = VehicleType::with(['vehicles'])->whereBelongsTo($company)->get()->sortDesc();
         // $vehicle_types = VehicleType::with(['vehicles'])->get();
 
         return StandardResource::collection($vehicle_types);
@@ -37,14 +37,13 @@ class VehicleTypeController extends Controller
     {
         $company = $request->user()->company;
 
-        $vehicleType = VehicleType::create([
+        $vehicleType = $company->vehicleTypes()->create([
             ...$request->validate([
                 'name' => [
                     'required',
                     $this->uniqueWithCompany('vehicle_types', 'name', $company)
                 ],
             ]),
-            'company_id' => $company->id
         ]);
 
         return new StandardResource($vehicleType);

@@ -14,7 +14,7 @@ class VehicleStatusController extends Controller
 
     public function __construct()
     {
-        $this->authorize(VehicleStatus::class);
+        $this->authorizeResource(VehicleStatus::class);
     }
 
     /**
