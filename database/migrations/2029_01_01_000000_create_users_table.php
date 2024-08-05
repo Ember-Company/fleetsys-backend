@@ -18,23 +18,13 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('industry')->default('Logistics');
             // $table->uuid('company_id');
             $table->foreignUuid('company_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('role_id')->nullable()->constrained();
 
+            $table->string('phone_number')->nullable();
             // $table->unsignedInteger('role');
             $table->unsignedInteger('role')->default(UserRole::USER);
 
-
-            $table->string('phone_number')->nullable();
-            $table->string('city')->nullable();
-            $table->string('region')->nullable();
-            $table->string('postal_code')->nullable();
-            $table->string('country')->nullable();
-            $table->string('currency')->nullable();
-            $table->boolean('is_24_hour_format')->default(0);
-            $table->string('street_address')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
