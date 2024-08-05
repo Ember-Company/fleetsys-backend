@@ -23,8 +23,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::define('is-company-member', function(User $user, Company $company) {
+            return $user->company->id === $company->id;
+        });
+
         Gate::define('admin-action', function (User $user, Company $company) {
-            return $user->company->id == $company->id && $user->isAdmin() || $user->isMaster();
+            return Gate::allows('is-company-member', $company) && $user->isAdmin() || $user->isMaster();
         });
     }
 }

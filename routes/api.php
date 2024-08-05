@@ -5,6 +5,9 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CurrentLocationController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\FuelController;
+use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\VehicleStatusController;
+use App\Http\Controllers\VehicleTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +22,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 Route::middleware('auth:sanctum')->group(function (){
     Route::apiResource('companies', CompanyController::class);
+    Route::apiResource('vehicle-types', VehicleTypeController::class);
+    Route::apiResource('vehicles', VehicleController::class);
+    Route::apiResource('vehicle-status', VehicleStatusController::class);
+
     Route::resource('fuel', FuelController::class)->except('edit','create');
     Route::resource('location', CurrentLocationController::class)->only('store', 'show');
     Route::resource('driver', DriverController::class)->except('edit', 'create');

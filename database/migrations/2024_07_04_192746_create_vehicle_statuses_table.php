@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicle_status', function (Blueprint $table) {
+        Schema::create('vehicle_statuses', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedInteger('status');
-            $table->string('color');
+
+            $table->foreignUuid('company_id')->constrained();
+
+            $table->string('name');
+            $table->string('status_color');
+
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vehicle_status');
+        Schema::dropIfExists('vehicle_statuses');
     }
 };

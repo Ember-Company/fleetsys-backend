@@ -21,4 +21,19 @@ class Company extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function vehicles(): HasMany
+    {
+        return $this->hasMany(Vehicle::class);
+    }
+
+    public function vehicleTypes(): HasMany
+    {
+        return $this->hasMany(VehicleType::class);
+    }
+
+    public function vehicleStatuses(): HasMany
+    {
+        return $this->hasMany(VehicleStatus::class);
+    }
 }
