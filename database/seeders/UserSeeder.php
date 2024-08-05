@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
 
         if($company)
         {
-            \App\Models\User::create([
+            $master_user = \App\Models\User::create([
                 'name' => 'Master User',
                 'email' => 'master@email.com',
                 'email_verified_at' => now(),
@@ -29,15 +29,23 @@ class UserSeeder extends Seeder
                 'company_id' => $company->id,
                 'role' => 0
             ]);
+
+            \App\Models\Profile::factory()->create([
+                'user_id' => $master_user->id
+            ]);
         }
 
         $companies = \App\Models\Company::all()->where('name', '!=', $MASTER_NAME);
 
         foreach ($companies as $company)
         {
-            \App\Models\User::factory()->create([
+            $user = \App\Models\User::factory()->create([
                 'company_id' => $company->id,
                 'role' => UserRole::ADMIN
+            ]);
+
+            \App\Models\Profile::factory()->create([
+                'user_id' => $user->id
             ]);
         }
     }
