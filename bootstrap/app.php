@@ -30,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
                             'error' => 'Resource not found',
                             'debug_message' => $e->getMessage()
                         ], $e->getStatusCode());
-
+                    
                     case $e instanceof AuthenticationException:
                         return null; // default exception response
 
