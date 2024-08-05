@@ -18,6 +18,7 @@ class AuthController extends Controller
     public function register(AuthRegisterRequest $request)
     {
         $company_query = \App\Models\Company::query();
+        $user = $request->user();
 
         if (!$request->has('company')) // api/register?company={company_id}
         {
@@ -27,9 +28,11 @@ class AuthController extends Controller
         $company = $company_query->where('id', $request->query('company'))->firstOrFail();
         $this->authorize('admin-action', $company); // if the current user and the new user are from the same company  and is the admin allow user creation
 
+        $selected_company = $user->isMaster() ? $company : $user->company;
+
         $user = User::create([
             ...$request->validated(),
-            'company_id' => $request->user()->company->id
+            'company_id' => $selected_company->id
         ]);
 
         return response()->json([
