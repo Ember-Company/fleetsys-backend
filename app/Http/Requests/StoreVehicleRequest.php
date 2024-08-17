@@ -11,7 +11,7 @@ use Illuminate\Validation\Rules\Enum;
 
 class StoreVehicleRequest extends FormRequest
 {
-    // use ValidatesUniques;
+    use ValidatesUniques;
 
     /**
      * Get the validation rules that apply to the request.

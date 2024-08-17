@@ -34,6 +34,7 @@ class AuthController extends Controller
             ...$request->validated(),
             'company_id' => $selected_company->id
         ]);
+
         $user->profile()->create($request->getUserMeta());
 
         return response()->json([
@@ -45,8 +46,7 @@ class AuthController extends Controller
     {
         $request->validated();
 
-        if (!Auth::attempt($request->only('email', 'password')))
-        {
+        if (!Auth::attempt($request->only('email', 'password'))) {
             throw ValidationException::withMessages([
                 'message' => 'invalid credentials'
             ]);
@@ -58,8 +58,8 @@ class AuthController extends Controller
         $token = $user->createToken($user->name)->plainTextToken;
 
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
+            'accessToken' => $token,
+            'tokenType' => 'Bearer',
             'user' => $user
         ]);
     }

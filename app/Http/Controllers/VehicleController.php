@@ -15,7 +15,7 @@ class VehicleController extends Controller
 
     public function __construct()
     {
-       $this->authorizeResource(Vehicle::class);
+        $this->authorizeResource(Vehicle::class);
     }
 
     /**
@@ -26,9 +26,9 @@ class VehicleController extends Controller
         $company = $request->user()->company;
 
         $vehicles = Vehicle::with(['vehicleType', 'vehicleStatus'])
-                            ->whereBelongsTo($company)
-                            ->latest()
-                            ->paginate(10);
+            ->whereBelongsTo($company)
+            ->latest()
+            ->paginate(10);
 
         return VehicleResource::collection($vehicles);
     }

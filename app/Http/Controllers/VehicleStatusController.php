@@ -22,7 +22,10 @@ class VehicleStatusController extends Controller
      */
     public function index(Request $request)
     {
-        $vehicleStatuses = VehicleStatus::with(['vehicles', 'vehicles.vehicleType'])->whereBelongsTo($request->user()->company)->get()->sortDesc();
+        $vehicleStatuses = VehicleStatus::with(['vehicles', 'vehicles.vehicleType'])
+            ->whereBelongsTo($request->user()->company)
+            ->get()
+            ->sortDesc();
 
         return StandardResource::collection($vehicleStatuses);
     }
