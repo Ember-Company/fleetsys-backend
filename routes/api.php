@@ -19,7 +19,7 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register'])->middleware('auth:sanctum');
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:web');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class)->except('store');
@@ -28,8 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('vehicles', VehicleController::class);
     Route::apiResource('vehicle-status', VehicleStatusController::class);
 
-    Route::resource('fuel', FuelController::class)->except('edit','create');
+    Route::resource('fuel', FuelController::class)->except('edit', 'create');
     Route::resource('location', CurrentLocationController::class)->only('store', 'show');
     Route::resource('driver', DriverController::class)->except('edit', 'create');
 });
-

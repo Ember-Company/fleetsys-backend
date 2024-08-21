@@ -18,8 +18,7 @@ class UserSeeder extends Seeder
         $MASTER_NAME = 'Master Company';
         $company = \App\Models\Company::where('name', $MASTER_NAME)->first();
 
-        if($company)
-        {
+        if ($company) {
             $master_user = \App\Models\User::create([
                 'name' => 'Master User',
                 'email' => 'master@email.com',
@@ -27,7 +26,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'remember_token' => Str::random(10),
                 'company_id' => $company->id,
-                'role' => 0
+                'role' => UserRole::MASTER
             ]);
 
             \App\Models\Profile::factory()->create([
@@ -37,8 +36,7 @@ class UserSeeder extends Seeder
 
         $companies = \App\Models\Company::all()->where('name', '!=', $MASTER_NAME);
 
-        foreach ($companies as $company)
-        {
+        foreach ($companies as $company) {
             $user = \App\Models\User::factory()->create([
                 'company_id' => $company->id,
                 'role' => UserRole::ADMIN

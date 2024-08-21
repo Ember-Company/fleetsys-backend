@@ -23,7 +23,7 @@ return new class extends Migration
 
             $table->string('phone_number')->nullable();
             // $table->unsignedInteger('role');
-            $table->unsignedInteger('role')->default(UserRole::USER);
+            $table->string('role')->default(UserRole::USER);
 
             $table->rememberToken();
             $table->timestamps();
