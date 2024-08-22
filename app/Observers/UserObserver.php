@@ -12,6 +12,8 @@ class UserObserver
     public function created(User $user): void
     {
         $companyQuery = $user->company()->getQuery();
+
+        // update users count on creation
         $companyQuery->increment('users_count');
     }
 

@@ -12,6 +12,8 @@ class VehicleObserver
     public function created(Vehicle $vehicle): void
     {
         $companyQuery = $vehicle->company()->getQuery();
+
+        // Update the counter on creation
         $companyQuery->increment('vehicles_count');
     }
 

@@ -17,6 +17,7 @@ return new class extends Migration
 
             $table->unsignedInteger('users_count')->default(0);
             $table->unsignedInteger('vehicles_count')->default(0);
+            $table->boolean('active')->default(false);
 
             $table->timestamps();
         });

@@ -13,6 +13,13 @@ use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
+/*
+
+TODO => store company logo / image
+
+*/
+
+
 class CompanyController extends Controller
 {
     use AuthorizesRequests;
@@ -58,7 +65,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        $company->load(['users']);
+        $company->load(['users', 'vehicles']);
 
         return new CompanyResource($company);
     }
