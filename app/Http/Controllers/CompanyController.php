@@ -13,6 +13,13 @@ use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
+/*
+
+TODO => store company logo / image
+
+*/
+
+
 class CompanyController extends Controller
 {
     use AuthorizesRequests;
@@ -29,7 +36,7 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         // Nao precisa try-catch, fiz um Exception Handler global pra resource not found, caso tiver um collection vazio o frontend vai tratar
-        $companies = Company::with(['users', 'users.profile', 'vehicles'])->get();
+        $companies = Company::all();
 
         return CompanyResource::collection($companies);
     }
@@ -58,7 +65,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        $company->load(['users']);
+        $company->load(['users', 'vehicles']);
 
         return new CompanyResource($company);
     }

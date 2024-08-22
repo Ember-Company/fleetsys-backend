@@ -7,6 +7,8 @@ use App\Enums\FuelVolumeUnit;
 use App\Enums\MeasurementSystem;
 use App\Enums\MeterUnit;
 use App\Enums\VehicleOwnership;
+use App\Observers\VehicleObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy([VehicleObserver::class])]
 class Vehicle extends Model
 {
     use HasFactory, SoftDeletes, HasUuids;

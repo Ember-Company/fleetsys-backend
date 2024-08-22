@@ -13,9 +13,9 @@ class Company extends Model
 
     protected $table = 'companies';
 
-    protected $fillable = ['name', 'created_at'];
+    protected $fillable = ['name', 'created_at', 'active'];
 
-    protected $casts = ['id' => 'string'];
+    protected $casts = ['id' => 'string', 'active' => 'boolean'];
 
     public function users(): HasMany
     {
