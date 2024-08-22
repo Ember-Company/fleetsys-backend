@@ -36,7 +36,7 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         // Nao precisa try-catch, fiz um Exception Handler global pra resource not found, caso tiver um collection vazio o frontend vai tratar
-        $companies = Company::query()->latest()->paginate(10);
+        $companies = Company::all();
 
         return CompanyResource::collection($companies);
     }
