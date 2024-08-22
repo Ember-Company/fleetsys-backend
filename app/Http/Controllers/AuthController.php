@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
+use App\Http\Resources\StandardResource;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -37,9 +38,7 @@ class AuthController extends Controller
 
         $user->profile()->create($request->getUserMeta());
 
-        return response()->json([
-            'user' => $user
-        ], 200);
+        return new StandardResource($user);
     }
 
     public function login(AuthLoginRequest $request)
@@ -57,7 +56,7 @@ class AuthController extends Controller
         $user->load('company');
         $token = $user->createToken($user->name)->plainTextToken;
 
-        return response()->json([
+        return new StandardResource([
             'accessToken' => $token,
             'tokenType' => 'Bearer',
             'user' => $user
