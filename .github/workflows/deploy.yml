@@ -31,8 +31,10 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           cd /var/www/fleetsys-backend
+          git config --global user.name ${{ secrets.GH_TOKEN }}
+          git config --global user.email ${{ secrets.GH_TOKEN }}
           git config --global --add safe.directory /var/www/fleetsys-backend
-          git pull https://${{ secrets.GH_TOKEN }}@github.com/Ember-Company/fleetsys-backend.git main
+          git pull origin main
           composer install --no-interaction --prefer-dist --optimize-autoloader
           php artisan migrate --force
           php artisan db:seed
