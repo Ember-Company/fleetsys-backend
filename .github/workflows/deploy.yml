@@ -32,7 +32,7 @@ jobs:
         script: |
           cd /var/www/fleetsys-backend
           git config --global --add safe.directory /var/www/fleetsys-backend
-          git pull https://${{ secrets.GH_TOKEN }}@github.com/username/repository.git main
+          git pull https://${{ secrets.GH_TOKEN }}@github.com/Ember-Company/fleetsys-backend.git main
           composer install --no-interaction --prefer-dist --optimize-autoloader
           php artisan migrate --force
           php artisan db:seed
