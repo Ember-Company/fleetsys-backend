@@ -11,8 +11,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GH_TOKEN }}
 
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
@@ -34,7 +32,7 @@ jobs:
         script: |
           cd /var/www/fleetsys-backend
           git config --global --add safe.directory /var/www/fleetsys-backend
-          git pull origin main
+          git pull https://${{ secrets.GH_TOKEN }}@github.com/username/repository.git main
           composer install --no-interaction --prefer-dist --optimize-autoloader
           php artisan migrate --force
           php artisan db:seed
