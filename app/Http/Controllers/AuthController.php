@@ -20,7 +20,7 @@ class AuthController extends Controller
     {
         $company_query = \App\Models\Company::query();
         $user = $request->user();
-        //teste pipe
+
         if (!$request->has('company')) // api/register?company={company_id}
         {
             throw new BadRequestHttpException('Missing required company parameter');
