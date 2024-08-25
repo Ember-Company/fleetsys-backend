@@ -34,6 +34,7 @@ jobs:
           git config --global credential.helper store
           echo "https://${{ secrets.GH_TOKEN }}:x-oauth-basic@github.com" > ~/.git-credentials
           git config --global --add safe.directory /var/www/fleetsys-backend
+          git restore .
           git pull origin main
           composer install --no-interaction --prefer-dist --optimize-autoloader
           php artisan migrate --force
