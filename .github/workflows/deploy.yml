@@ -32,7 +32,6 @@ jobs:
         script: |
           cd /var/www/fleetsys-backend
           git config --global --add safe.directory /var/www/fleetsys-backend
-          git restore .
           git pull https://${{ secrets.GH_TOKEN }}:x-oauth-basic@github.com/Ember-Company/fleetsys-backend.git main
           composer install --no-interaction --prefer-dist --optimize-autoloader
           php artisan migrate --force
