@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusColors;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,10 @@ class VehicleStatus extends Model
         'name',
         'status_color',
         'company_id'
+    ];
+
+    protected $casts = [
+        'status_color' => StatusColors::class
     ];
 
     public function vehicles(): HasMany

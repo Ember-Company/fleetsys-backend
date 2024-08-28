@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\StatusColors;
 use App\Models\VehicleStatus;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,26 +16,22 @@ class VehicleStatusSeeder extends Seeder
     public function run(): void
     {
         $statuses = [
-            ['name' => 'Available', 'status_color' => '#28a745'], // Green
-            ['name' => 'In Repair', 'status_color' => '#ffc107'], // Yellow
-            ['name' => 'Out of Service', 'status_color' => '#dc3545'], // Red
-            ['name' => 'Reserved', 'status_color' => '#17a2b8'], // Teal
-            ['name' => 'Sold', 'status_color' => '#6c757d'], // Gray
+            ['name' => 'Available', 'status_color' => StatusColors::SUCCESS], // Green
+            ['name' => 'In Repair', 'status_color' => StatusColors::WARNING], // Yellow
+            ['name' => 'Out of Service', 'status_color' => StatusColors::ERROR], // Red
+            ['name' => 'Reserved', 'status_color' => StatusColors::INFO], // Teal
+            ['name' => 'Sold', 'status_color' => StatusColors::DEFAULT], // Gray
         ];
 
         $companies = \App\Models\Company::all();
 
-        foreach ($companies as $company)
-        {
-            foreach ($statuses as $st)
-            {
+        foreach ($companies as $company) {
+            foreach ($statuses as $st) {
                 $company->vehicleStatuses()->create([
                     'name' => $st['name'],
                     'status_color' => $st['status_color']
                 ]);
             }
         }
-
-
     }
 }
