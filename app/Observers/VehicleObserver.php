@@ -12,9 +12,11 @@ class VehicleObserver
     public function created(Vehicle $vehicle): void
     {
         $companyQuery = $vehicle->company()->getQuery();
+        $vehicleStatusQuery = $vehicle->vehicleStatus()->getQuery();
 
         // Update the counter on creation
         $companyQuery->increment('vehicles_count');
+        $vehicleStatusQuery->increment('vehicles_count');
     }
 
     /**
@@ -31,7 +33,10 @@ class VehicleObserver
     public function deleted(Vehicle $vehicle): void
     {
         $companyQuery = $vehicle->company()->getQuery();
+        $vehicleStatusQuery = $vehicle->vehicleStatus()->getQuery();
+
         $companyQuery->decrement('vehicles_count');
+        $vehicleStatusQuery->increment('vehicles_count');
     }
 
     /**
