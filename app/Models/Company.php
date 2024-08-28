@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\SubscriptionType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,9 +14,9 @@ class Company extends Model
 
     protected $table = 'companies';
 
-    protected $fillable = ['name', 'created_at', 'active'];
+    protected $fillable = ['name', 'created_at', 'active', 'subscription_type'];
 
-    protected $casts = ['id' => 'string', 'active' => 'boolean'];
+    protected $casts = ['id' => 'string', 'active' => 'boolean', 'subscription_type' => SubscriptionType::class];
 
     public function users(): HasMany
     {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StatusColors;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->foreignUuid('company_id')->constrained();
 
             $table->string('name');
-            $table->string('status_color');
+            $table->string('status_color')->default(StatusColors::DEFAULT);
 
             $table->timestamps();
         });

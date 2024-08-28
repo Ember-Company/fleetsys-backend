@@ -34,8 +34,6 @@ return new class extends Migration
 
             $table->string('name');
 
-            // $table->year('vehicle_model_year');
-
             $table->bigInteger('primary_meter_value')->nullable();
             $table->bigInteger('primary_meter_usage_per_day')->nullable();
 
@@ -70,7 +68,6 @@ return new class extends Migration
             $table->integer('registration_expiration_month')->nullable();
             $table->string('registration_state')->nullable();
             $table->string('default_image_url_small')->nullable();
-
 
             $table->string('loan_account_number')->nullable();
             $table->dateTime('loan_ended_at')->nullable();

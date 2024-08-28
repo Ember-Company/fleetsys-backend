@@ -53,7 +53,7 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        $vehicle->load(['vehicleType', 'vehicleStatus', 'company']);
+        $vehicle->load(['vehicleType', 'vehicleStatus']);
 
         return new VehicleResource($vehicle);
     }

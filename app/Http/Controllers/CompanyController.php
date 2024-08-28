@@ -9,7 +9,6 @@ use App\Http\Resources\CompanyResource;
 use Illuminate\Support\Str;
 use App\Models\Company;
 use App\Models\User;
-use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
@@ -18,7 +17,6 @@ use Illuminate\Http\Request;
 TODO => store company logo / image
 
 */
-
 
 class CompanyController extends Controller
 {
@@ -30,12 +28,10 @@ class CompanyController extends Controller
     }
 
     /**
-     *
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        // Nao precisa try-catch, fiz um Exception Handler global pra resource not found, caso tiver um collection vazio o frontend vai tratar
         $companies = Company::all();
 
         return CompanyResource::collection($companies);

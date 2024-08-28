@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fuel', function (Blueprint $table) {
+            // TODO move to pivot table. ManyToMany Relationship.
+            // Vehicles <-> Fuel Registries
             $table->id();
-            $table->string('name');    
+            $table->string('name');
             $table->timestamps();
         });
     }
