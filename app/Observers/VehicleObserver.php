@@ -13,10 +13,12 @@ class VehicleObserver
     {
         $companyQuery = $vehicle->company()->getQuery();
         $vehicleStatusQuery = $vehicle->vehicleStatus()->getQuery();
+        $vehicleTypeQuery = $vehicle->vehicleType()->getQuery();
 
         // Update the counter on creation
         $companyQuery->increment('vehicles_count');
         $vehicleStatusQuery->increment('vehicles_count');
+        $vehicleTypeQuery->increment('vehicles_count');
     }
 
     /**
@@ -34,9 +36,11 @@ class VehicleObserver
     {
         $companyQuery = $vehicle->company()->getQuery();
         $vehicleStatusQuery = $vehicle->vehicleStatus()->getQuery();
+        $vehicleTypeQuery = $vehicle->vehicleType()->getQuery();
 
         $companyQuery->decrement('vehicles_count');
         $vehicleStatusQuery->increment('vehicles_count');
+        $vehicleTypeQuery->increment('vehicles_count');
     }
 
     /**
