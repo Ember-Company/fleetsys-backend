@@ -39,7 +39,7 @@ class VehicleStatusController extends Controller
 
         $vehicleStatus = $company->vehicleStatuses()->create([
             ...$request->validate([
-                'status_color' => 'required|string|max:7',
+                'status_color' => 'required|string',
                 'name' => [
                     'required',
                     $this->uniqueWithCompany('vehicle_statuses', 'name')
