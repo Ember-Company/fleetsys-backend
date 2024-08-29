@@ -18,7 +18,7 @@ trait ValidatesUniques
      * @param  ?Company $company
      * @return \Illuminate\Validation\Rules\Unique
      */
-    public function uniqueWithCompany(string $table, string $column, ?Company $company=null): Unique
+    public function uniqueWithCompany(string $table, string $column, ?Company $company = null): Unique
     {
         $selected_company = $company ?? Auth::user()->company;
 
@@ -26,5 +26,4 @@ trait ValidatesUniques
             return $query->where('company_id', $selected_company->id);
         })->ignore(null);
     }
-
 }

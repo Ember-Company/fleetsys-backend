@@ -67,17 +67,17 @@ class VehicleStatusController extends Controller
     {
         $company = $request->user()->company;
 
-        $updatedVehicleStatus = $vehicleStatus->update([
+        $vehicleStatus->update([
             ...$request->validate([
-                'status_color' => 'sometimes|max:7',
+                'status_color' => 'sometimes',
                 'name' => [
-                    'sometimes',
-                    $this->uniqueWithCompany('vehicle_statuses', 'name')
+                    'sometimes'
+                    // $this->uniqueWithCompany('vehicle_statuses', 'name')
                 ]
             ])
         ]);
 
-        return new StandardResource($updatedVehicleStatus);
+        return response()->noContent();
     }
 
     /**
