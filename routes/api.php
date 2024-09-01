@@ -6,6 +6,7 @@ use App\Http\Controllers\CurrentLocationController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\FuelController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehicleAssignmentController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\VehicleStatusController;
 use App\Http\Controllers\VehicleTypeController;
@@ -28,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('vehicle-types', VehicleTypeController::class);
     Route::apiResource('vehicles', VehicleController::class);
     Route::apiResource('vehicle-status', VehicleStatusController::class);
-
+    Route::apiResource('vehicle-assignments', VehicleAssignmentController::class);
     Route::resource('fuel', FuelController::class)->except('edit', 'create');
     Route::resource('location', CurrentLocationController::class)->only('store', 'show');
     Route::resource('driver', DriverController::class)->except('edit', 'create');
