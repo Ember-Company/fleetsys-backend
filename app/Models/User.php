@@ -30,7 +30,8 @@ class User extends Authenticatable
         'email',
         'password',
         'company_id',
-        'role'
+        'role',
+        'profile_image'
     ];
 
     /**
@@ -85,5 +86,10 @@ class User extends Authenticatable
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function vehicleAssignments()
+    {
+        return $this->hasMany(VehicleAssignment::class);
     }
 }
