@@ -25,7 +25,7 @@ class VehicleController extends Controller
     {
         $company = $request->user()->company;
 
-        $vehicles = Vehicle::with(['vehicleType', 'vehicleStatus'])
+        $vehicles = Vehicle::with(['vehicleType', 'vehicleStatus', 'vehicleAssignments'])
             ->whereBelongsTo($company)
             ->latest()
             ->paginate(10);
