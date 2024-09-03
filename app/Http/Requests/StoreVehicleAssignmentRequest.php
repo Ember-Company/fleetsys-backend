@@ -3,9 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use App\Traits\ValidateRoles;
 class StoreVehicleAssignmentRequest extends FormRequest
 {
+    use ValidateRoles;
     /**
      * Get the validation rules that apply to the request.
      *
@@ -19,7 +20,7 @@ class StoreVehicleAssignmentRequest extends FormRequest
             'starting_meter_entry' => ['nullable', 'string', 'max:255'],               
             'ending_meter_entry' => ['nullable', 'string', 'max:255'],
             'comments' => ['nullable', 'string'],
-            'user_id' => ['required','exists:users,id'],                             
+            'user_id' => ['required', $this->notAdminUserRule()],                             
             'vehicle_id' => ['required','exists:vehicles,id'],                     
         ];
     }
