@@ -13,7 +13,7 @@ class AuthRegisterRequest extends FormRequest
 
     protected $company;
 
-    public function __construct(\App\Models\Company $company=null)
+    public function __construct(\App\Models\Company $company = null)
     {
         parent::__construct();
         $this->company = $company;

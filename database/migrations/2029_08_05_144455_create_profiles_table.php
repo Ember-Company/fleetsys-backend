@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
 
-            $table->string('industry')->default('Logistics');
+            $table->string('industry')->nullable()->default('Logistics');
             $table->string('city')->nullable();
             $table->string('region')->nullable();
             $table->string('postal_code')->nullable();

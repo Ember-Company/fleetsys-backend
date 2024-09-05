@@ -26,10 +26,10 @@ class AuthController extends Controller
             throw new BadRequestHttpException('Missing required company parameter');
         }
 
-        $company = $company_query->where('id', $request->query('company'))->firstOrFail();
-        $this->authorize('admin-action', $company); // if the current user and the new user are from the same company  and is the admin allow user creation
-
+        $company = $company_query->where('id', $request->query('company'))->first();
         $selected_company = $user->isMaster() ? $company : $user->company;
+
+        $this->authorize('admin-action', $selected_company); // if the current user and the new user are from the same company  and is the admin allow user creation
 
         $user = User::create([
             ...$request->validated(),
