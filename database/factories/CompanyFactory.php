@@ -17,8 +17,19 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->word()
+            'name' => $this->faker->company(),
+            'industry' => $this->faker->word(),
+            'max_vehicles' => $this->faker->numberBetween(1, 30),
+            'active' => $this->faker->boolean(),
+            'contact_name' => $this->faker->name(),
+            'contact_email' => $this->faker->safeEmail(),
+            'contact_phone' => $this->faker->phoneNumber(),
+            'country' => $this->faker->country(),
+            'state' => $this->faker->state(),
+            'city' => $this->faker->city(),
+            'max_drivers' => $this->faker->numberBetween(1, 20),
+            'max_routes' => $this->faker->numberBetween(1, 20),
+            'has_support_access' => $this->faker->boolean(),
         ];
-    
     }
 }

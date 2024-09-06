@@ -17,12 +17,11 @@ class VehicleSeeder extends Seeder
         $MASTER_NAME = 'Master Company';
         $companies = \App\Models\Company::all()->where('name', '!=', $MASTER_NAME);
 
-        foreach ($companies as $company)
-        {
+        foreach ($companies as $company) {
             $v_type = $company->vehicleTypes()->get()->random();
             $v_status = $company->vehicleStatuses()->get()->random();
 
-            Vehicle::factory()->create([
+            Vehicle::factory(4)->create([
                 'company_id' => $company->id,
                 'vehicle_type_id' => $v_type->id,
                 'vehicle_status_id' => $v_status->id

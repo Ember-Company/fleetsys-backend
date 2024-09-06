@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LoggedIn;
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Http\Resources\StandardResource;
@@ -55,6 +56,8 @@ class AuthController extends Controller
 
         $user->load('company');
         $token = $user->createToken($user->name)->plainTextToken;
+
+        LoggedIn::dispatch($user);
 
         return new StandardResource([
             'accessToken' => $token,
