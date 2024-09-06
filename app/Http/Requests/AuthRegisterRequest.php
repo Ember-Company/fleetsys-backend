@@ -34,6 +34,7 @@ class AuthRegisterRequest extends FormRequest
                 'string',
                 'unique:users,email'
             ],
+            'phone_number' => 'nullable|string',
             'password' => 'required|string|min:8',
             'role' => ['sometimes', Rule::in(array_column(UserRole::cases(), 'value'))],
 

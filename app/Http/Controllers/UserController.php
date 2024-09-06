@@ -24,10 +24,10 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $company = $request->user()->company;
-        $users = User::with(['company', 'profile'])
-                        ->whereBelongsTo($company)
-                        ->latest()
-                        ->paginate(10);
+        $users = User::with(['company', 'profile', 'vehicleAssignments'])
+            ->whereBelongsTo($company)
+            ->latest()
+            ->paginate(10);
 
         return StandardResource::collection($users);
     }

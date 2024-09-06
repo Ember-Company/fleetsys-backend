@@ -22,7 +22,6 @@ return new class extends Migration
             $table->foreignUuid('company_id')->constrained()->cascadeOnDelete();
 
             $table->string('phone_number')->nullable();
-            // $table->unsignedInteger('role');
             $table->string('role')->default(UserRole::USER);
             $table->string('profile_image')->nullable();
             $table->rememberToken();
