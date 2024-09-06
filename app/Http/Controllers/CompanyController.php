@@ -46,9 +46,9 @@ class CompanyController extends Controller
         $company = Company::create($data);
 
         User::create([
-            'name' => 'admin-' . $company->name,
-            'email' => 'admin@' . Str::lower($company->name) . '.com',
-            'password' => 'admin123',
+            'name' => 'admin-' . Str::slug($company->name),
+            'email' => 'admin@' . Str::slug($company->name) . '.com',
+            'password' => \bcrypt('admin123'),
             'company_id' => $company->id,
             'role' => UserRole::ADMIN
         ]);
