@@ -24,7 +24,11 @@ class UpdateCompanyActivity
         $user = $event->user;
         $company = $user->company;
 
-        if ($company->last_active_at === null || $company->last_active_at->lt(now()->subMinutes(5))) {
+        $lastActiveAt = $company->last_active_at ? $company->last_active_at : now()->subDays(1);
+
+        $lastActiveAt = $lastActiveAt instanceof \Carbon\Carbon ? $lastActiveAt : \Carbon\Carbon::parse($lastActiveAt);
+
+        if ($lastActiveAt->lt(now()->subMinutes(5))) {
             $company->update([
                 'last_active_at' => now()
             ]);

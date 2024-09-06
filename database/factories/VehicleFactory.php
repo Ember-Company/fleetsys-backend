@@ -17,15 +17,17 @@ class VehicleFactory extends Factory
      */
     public function definition(): array
     {
+        $licensePlate = strtoupper($this->faker->bothify('??-####'));
+
         return [
-            'name' => fake()->word(),
-            'color' => fake()->colorName(),
-            'year' => fake()->year(),
-            'license_plate' => fake()->text(6),
-            'make' => fake()->word(),
-            'model' => fake()->word(),
-            'vin' => fake()->randomNumber(),
-            'vehicle_type_id' => VehicleType::all()->first()->id
+            'name' => $this->faker->word(),
+            'color' => $this->faker->safeColorName(),
+            'year' => $this->faker->year($max = 'now'),
+            'license_plate' => $licensePlate,
+            'make' => $this->faker->company(),
+            'model' => $this->faker->word(),
+            'vin' => $this->faker->uuid(),
+            'vehicle_type_id' => \App\Models\VehicleType::inRandomOrder()->first()->id
         ];
     }
 }

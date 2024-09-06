@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\LoggedIn;
+use App\Listeners\UpdateCompanyActivity;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Event::listen(
-            LoggedIn::class
+            LoggedIn::class,
+            UpdateCompanyActivity::class
         );
     }
 }

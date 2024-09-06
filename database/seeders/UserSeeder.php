@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\UserRole;
+use App\Models\Profile;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -37,14 +38,12 @@ class UserSeeder extends Seeder
         $companies = \App\Models\Company::all()->where('name', '!=', $MASTER_NAME);
 
         foreach ($companies as $company) {
-            $user = \App\Models\User::factory()->create([
-                'company_id' => $company->id,
-                'role' => UserRole::ADMIN
-            ]);
-
-            \App\Models\Profile::factory()->create([
-                'user_id' => $user->id
-            ]);
+            \App\Models\User::factory(3)
+                ->has(Profile::factory())
+                ->create([
+                    'company_id' => $company->id,
+                    'role' => UserRole::ADMIN,
+                ]);
         }
     }
 }

@@ -12,7 +12,7 @@ use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class LoggedIn implements ShouldDispatchAfterCommit
+class LoggedIn
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
