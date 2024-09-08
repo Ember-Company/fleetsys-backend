@@ -42,7 +42,7 @@ class VehicleTypeController extends Controller
     
         $data = $request->validated();
     
-        $vehicleType = $company->vehicleTypes()->update([
+        $vehicleType = $company->vehicleTypes()->create([
             'name' => $data['name'],
         ]);
     
