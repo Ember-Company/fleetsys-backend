@@ -16,6 +16,8 @@ class UpdateAttributeRequest extends FormRequest
     {
         return [
             'name' =>  ['required', 'string'],
+            'attributes' => ['array', 'max:3'],
+            'attributes.*' => 'string', 
         ];
     }
 }

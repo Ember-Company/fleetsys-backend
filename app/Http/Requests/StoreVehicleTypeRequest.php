@@ -16,7 +16,8 @@ class StoreVehicleTypeRequest extends FormRequest
     {
         return [
             'name' =>  ['required', $this->uniqueWithCompany('vehicle_types', 'name')],
-            'attributes' => 'array'
+            'attributes' => ['array', 'max:3'],
+            'attributes.*' => 'string', 
         ];
     }
 }
