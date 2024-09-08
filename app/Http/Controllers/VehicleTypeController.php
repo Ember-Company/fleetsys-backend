@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreVehicleTypeRequest;
+use App\Http\Requests\UpdateVehicleTypeRequest; 
 use App\Http\Resources\StandardResource;
+use App\Models\Attribute;
 use App\Models\VehicleType;
 use App\Traits\ValidatesUniques;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -24,7 +27,7 @@ class VehicleTypeController extends Controller
     public function index(Request $request)
     {
         $company = $request->user()->company;
-        $vehicle_types = VehicleType::with(['vehicles'])->whereBelongsTo($company)->get()->sortDesc();
+        $vehicle_types = VehicleType::with(['vehicles', 'attributes'])->whereBelongsTo($company)->get()->sortDesc();
         // $vehicle_types = VehicleType::with(['vehicles'])->get();
 
         return StandardResource::collection($vehicle_types);
@@ -33,28 +36,33 @@ class VehicleTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreVehicleTypeRequest $request)
     {
         $company = $request->user()->company;
-
+    
+        $data = $request->validated();
+    
         $vehicleType = $company->vehicleTypes()->create([
-            ...$request->validate([
-                'name' => [
-                    'required',
-                    $this->uniqueWithCompany('vehicle_types', 'name')
-                ],
-            ]),
+            'name' => $data['name'],
         ]);
+    
+        $attributes = $data['attributes'] ?? [];
+    
+        foreach ($attributes as $attributeName) {
+            $attribute = Attribute::firstOrCreate(['name' => $attributeName]);
+    
+            $vehicleType->attributes()->syncWithoutDetaching([$attribute->id]);
+        }
 
-        return new StandardResource($vehicleType);
+        return new StandardResource($vehicleType->load('attributes'));
     }
-
+    
     /**
      * Display the specified resource.
      */
     public function show(Request $request, VehicleType $vehicleType)
     {
-        $vehicleType->load(['vehicles', 'vehicles.vehicleStatus']);
+        $vehicleType->load(['vehicles', 'vehicles.vehicleStatus', 'attributes']);
 
         return new StandardResource($vehicleType);
     }
@@ -62,18 +70,25 @@ class VehicleTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, VehicleType $vehicleType)
-    {
-        $vehicleType->update([
-            ...$request->validate([
-                'name' => [
-                    'sometimes',
-                    $this->uniqueWithCompany('vehicle_types', 'name')
-                ]
-            ])
-        ]);
 
-        return new StandardResource($vehicleType);
+    public function update(UpdateVehicleTypeRequest $request, VehicleType $vehicleType)
+    {
+        $data = $request->validated();
+
+        if (isset($data['name'])) {
+            $vehicleType->update(['name' => $data['name']]);
+        }
+
+        $attributes = collect($data['attributes'] ?? []);
+
+        $attributeIds = $attributes->map(function ($attributeName) {
+            $attribute = Attribute::firstOrCreate(['name' => $attributeName]);
+            return $attribute->id;
+        })->toArray();
+
+        $vehicleType->attributes()->sync($attributeIds);
+
+        return new StandardResource($vehicleType->load('attributes'));
     }
 
     /**

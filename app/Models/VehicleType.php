@@ -29,4 +29,9 @@ class VehicleType extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function attributes(): BelongsToMany
+    {
+        return $this->belongsToMany(Attribute::class, 'attribute_vehicle_type');
+    }
 }
