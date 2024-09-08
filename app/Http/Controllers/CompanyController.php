@@ -82,8 +82,8 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        // switch to soft delete, cascadeOnDelete to soft delete it's users
-        $company->delete();
+
+        $company->update(['active' => false]);
 
         return response()->noContent();
     }
