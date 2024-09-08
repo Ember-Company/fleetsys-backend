@@ -54,7 +54,7 @@ class VehicleTypeController extends Controller
      */
     public function show(Request $request, VehicleType $vehicleType)
     {
-        $vehicleType->load(['vehicles', 'vehicles.vehicleStatus']);
+        $vehicleType->load(['vehicles', 'vehicles.vehicleStatus', 'attributes']);
 
         return new StandardResource($vehicleType);
     }
