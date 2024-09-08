@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CurrentLocationController;
@@ -33,4 +34,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('fuel', FuelController::class)->except('edit', 'create');
     Route::resource('location', CurrentLocationController::class)->only('store', 'show');
     Route::resource('driver', DriverController::class)->except('edit', 'create');
+    Route::apiResource('attributes', AttributeController::class);
 });
