@@ -24,7 +24,7 @@ class VehicleTypeController extends Controller
     public function index(Request $request)
     {
         $company = $request->user()->company;
-        $vehicle_types = VehicleType::with(['vehicles'])->whereBelongsTo($company)->get()->sortDesc();
+        $vehicle_types = VehicleType::with(['vehicles', 'attributes'])->whereBelongsTo($company)->get()->sortDesc();
         // $vehicle_types = VehicleType::with(['vehicles'])->get();
 
         return StandardResource::collection($vehicle_types);
