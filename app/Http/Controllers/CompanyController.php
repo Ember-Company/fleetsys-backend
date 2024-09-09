@@ -32,7 +32,7 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        $companies = Company::all();
+        $companies = Company::query()->latest()->get();
 
         return CompanyResource::collection($companies);
     }
