@@ -17,7 +17,8 @@ class UpdateVehicleTypeRequest extends FormRequest
     {
         return [
             'name' =>  ['sometimes', $this->uniqueWithCompany('vehicle_types', 'name')],
-            'attributes' => 'array'
+            'attributes' => ['array', 'max:3'],
+            'attributes.*' => 'string',
         ];
     }
 }
