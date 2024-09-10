@@ -46,6 +46,6 @@ class VehicleStatusPolicy
      */
     public function delete(User $user, VehicleStatus $vehicleStatus): bool
     {
-        return Gate::allows('is-company-member', $vehicleStatus->company);
+        return Gate::allows('is-company-member', $vehicleStatus->company) && !$vehicleStatus->is_default;
     }
 }
