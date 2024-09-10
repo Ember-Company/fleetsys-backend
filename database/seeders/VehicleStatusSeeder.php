@@ -29,7 +29,8 @@ class VehicleStatusSeeder extends Seeder
             foreach ($statuses as $st) {
                 $company->vehicleStatuses()->create([
                     'name' => $st['name'],
-                    'status_color' => $st['status_color']
+                    'status_color' => $st['status_color'],
+                    'is_default' => true
                 ]);
             }
         }
