@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('status_color')->default(StatusColors::DEFAULT);
             $table->unsignedInteger('vehicles_count')->default(0);
-
-            $table->timestamps();
+            $table->boolean('is_default')->default(false);
+            $table->timestamps();   
         });
     }
 

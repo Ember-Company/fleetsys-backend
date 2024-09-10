@@ -19,7 +19,8 @@ class VehicleStatus extends Model
     protected $fillable = [
         'name',
         'status_color',
-        'company_id'
+        'company_id',
+        'is_default'
     ];
 
     protected $casts = [
