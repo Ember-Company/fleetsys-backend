@@ -6,10 +6,12 @@ use App\Enums\UserRole;
 use App\Models\Roles;
 use App\Models\User;
 use App\Models\VehicleAssignment;
+use App\Traits\VehicleAssignmentValidation;
 use Illuminate\Auth\Access\Response;
 
 class VehicleAssignmentPolicy
 {
+    use VehicleAssignmentValidation;
     /**
      * Determine whether the user can view any models.
      */
@@ -39,7 +41,7 @@ class VehicleAssignmentPolicy
      */
     public function update(User $user, VehicleAssignment $vehicleAssignment): bool
     {
-        return $user->isAdmin() || $user->isMaster();
+        return $user->isAdmin() || $user->isMaster() || $this->assign($user, $vehicleAssignment->vehicle);
     }
 
     /**
