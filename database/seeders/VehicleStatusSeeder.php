@@ -21,6 +21,7 @@ class VehicleStatusSeeder extends Seeder
             ['name' => 'Out of Service', 'status_color' => StatusColors::ERROR], // Red
             ['name' => 'Reserved', 'status_color' => StatusColors::INFO], // Teal
             ['name' => 'Sold', 'status_color' => StatusColors::DEFAULT], // Gray
+            ['name' => 'Needs Maintenance', 'status_color' => StatusColors::WARNING],
         ];
 
         $companies = \App\Models\Company::all();
