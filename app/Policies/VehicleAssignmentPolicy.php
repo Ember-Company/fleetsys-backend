@@ -2,12 +2,9 @@
 
 namespace App\Policies;
 
-use App\Enums\UserRole;
-use App\Models\Roles;
 use App\Models\User;
 use App\Models\VehicleAssignment;
 use App\Traits\VehicleAssignmentValidation;
-use Illuminate\Auth\Access\Response;
 
 class VehicleAssignmentPolicy
 {
@@ -41,7 +38,7 @@ class VehicleAssignmentPolicy
      */
     public function update(User $user, VehicleAssignment $vehicleAssignment): bool
     {
-        return $user->isAdmin() || $user->isMaster() || $this->assign($user, $vehicleAssignment->vehicle);
+        return $user->isAdmin() || $user->isMaster();
     }
 
     /**
