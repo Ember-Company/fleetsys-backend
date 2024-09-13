@@ -9,21 +9,21 @@ trait VehicleAssignmentValidation
 {
     public function canAssignDriver(Vehicle $vehicle): bool
     {
-        return $vehicle->status === 'Available';
+        return $vehicle->vehicleStatus->name === 'Available';
     }
 
     public function canAssignTechnician(Vehicle $vehicle): bool
     {
-       return $vehicle->status === 'In Repair';
+       return $vehicle->vehicleStatus->name === 'Needs Maintenance';
     }
 
-    public function assign(User $user, Vehicle $vehicle)
+    public function assign(User $user, Vehicle $vehicle): bool
     {
-        if ($user->role === 'Driver') {
+        if ($user->role->value === 'DRIVER') {
             return $this->canAssignDriver($vehicle);
         }
 
-        if ($user->role === 'Technician') {
+        if ($user->role->value === 'TECHNICIAN') {
             return $this->canAssignTechnician($vehicle);
         }
 
