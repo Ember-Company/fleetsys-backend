@@ -8,6 +8,7 @@ enum UserRole: string
     case ADMIN = 'ADMIN';
     case USER = 'USER';
     case DRIVER = 'DRIVER';
+    case TECHNICIAN = 'TECHNICIAN';
 
     public function name()
     {
@@ -16,6 +17,7 @@ enum UserRole: string
             UserRole::ADMIN => __('ADMIN'),
             UserRole::USER => __('USER'),
             UserRole::DRIVER => __('DRIVER'),
+            UserRole::TECHNICIAN => __(key: 'TECHNICIAN')
         };
     }
 }
