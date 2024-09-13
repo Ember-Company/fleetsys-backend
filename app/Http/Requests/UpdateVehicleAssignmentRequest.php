@@ -2,18 +2,33 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Models\Vehicle;
 use App\Traits\ValidateRoles;
+use App\Traits\VehicleAssignmentValidation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateVehicleAssignmentRequest extends FormRequest
 {
 
-    use ValidateRoles;
+    use ValidateRoles, VehicleAssignmentValidation;
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+    public function authorize(): bool
+    {
+        $vehicle = Vehicle::findOrFail($this->vehicle_id);
+        $user = User::findOrFail($this->user_id);
+
+        if (!$this->assign($user, $vehicle)) {
+            abort(403);
+        }
+
+        return true;
+    }
+
     public function rules(): array
     {
         return [
