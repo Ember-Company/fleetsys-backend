@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Models\Company;
 use App\Models\User;
-use App\Policies\CompanyPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 

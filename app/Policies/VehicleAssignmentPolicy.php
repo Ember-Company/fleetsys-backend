@@ -2,14 +2,13 @@
 
 namespace App\Policies;
 
-use App\Enums\UserRole;
-use App\Models\Roles;
 use App\Models\User;
 use App\Models\VehicleAssignment;
-use Illuminate\Auth\Access\Response;
+use App\Traits\VehicleAssignmentValidation;
 
 class VehicleAssignmentPolicy
 {
+    use VehicleAssignmentValidation;
     /**
      * Determine whether the user can view any models.
      */
