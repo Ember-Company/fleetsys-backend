@@ -51,9 +51,17 @@ class VehicleAssignmentController extends Controller
      */
     public function update(UpdateVehicleAssignmentRequest $request, VehicleAssignment $vehicleAssignment)
     {
-        $vehicleAssignment->update([
-            ...$request->validated()
-        ]);
+        $data = $request->validated();
+
+        if ($vehicleAssignment->user_id !== $data['user_id']) {
+            AssignmentHistory::create([
+                'vehicle_id' => $vehicleAssignment->vehicle_id,
+                'user_id' => $vehicleAssignment->user_id,
+                'action' => 'ASSIGNED',
+            ]);
+        }
+
+        $vehicleAssignment->update($data);
 
         return new ResourcesVehicleAssignment($vehicleAssignment);
     }
