@@ -93,4 +93,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(VehicleAssignment::class);
     }
+
+    public function assignmentHistories()
+    {
+        return $this->hasMany(AssignmentHistory::class);
+    }
+
 }
