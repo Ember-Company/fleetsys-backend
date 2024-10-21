@@ -72,4 +72,10 @@ class Vehicle extends Model
     {
         return $this->hasMany(VehicleAssignment::class);
     }
+
+    public function assignmentHistories()
+    {
+        return $this->hasMany(AssignmentHistory::class);
+    }
+
 }
