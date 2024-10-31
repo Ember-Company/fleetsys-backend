@@ -16,7 +16,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
-    return new StandardResource($request->user());
+    $user = $request->user();
+    $user->load(['profile']);
+
+    return new StandardResource($user);
 })->middleware('auth:sanctum');
 
 

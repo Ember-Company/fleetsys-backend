@@ -22,13 +22,13 @@ class UpdateUserRequest extends FormRequest
                 'sometimes',
                 'email',
                 'string',
-                'unique:users,email'
+                // 'unique:users,email'
             ],
             'user_meta' => 'sometimes|array',
-            'user_meta.industry' => 'sometimes|string',
-            'user_meta.city' => 'sometimes|string',
-            'user_meta.region' => 'sometimes|string',
-            'user_meta.country' => 'sometimes|string'
+            'user_meta.industry' => 'sometimes|string|nullable',
+            'user_meta.city' => 'sometimes|string|nullable',
+            'user_meta.region' => 'sometimes|string|nullable',
+            'user_meta.country' => 'sometimes|string|nullable'
         ];
     }
 
