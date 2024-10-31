@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreVehicleAssignmentRequest;
 use App\Http\Requests\UpdateVehicleAssignmentRequest;
 use App\Http\Resources\VehicleAssignment as ResourcesVehicleAssignment;
+use App\Models\AssignmentHistory;
 use App\Models\VehicleAssignment;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -51,9 +52,17 @@ class VehicleAssignmentController extends Controller
      */
     public function update(UpdateVehicleAssignmentRequest $request, VehicleAssignment $vehicleAssignment)
     {
-        $vehicleAssignment->update([
-            ...$request->validated()
-        ]);
+        $data = $request->validated();
+
+        if ($vehicleAssignment->user_id !== $data['user_id']) {
+            AssignmentHistory::create([
+                'vehicle_id' => $vehicleAssignment->vehicle_id,
+                'user_id' => $vehicleAssignment->user_id,
+                'action' => 'ASSIGNED',
+            ]);
+        }
+
+        $vehicleAssignment->update($data);
 
         return new ResourcesVehicleAssignment($vehicleAssignment);
     }
@@ -64,6 +73,13 @@ class VehicleAssignmentController extends Controller
     public function destroy(VehicleAssignment $vehicleAssignment)
     {
         $vehicleAssignment->delete();
+
+        AssignmentHistory::create([
+            'vehicle_id' => $vehicleAssignment->vehicle_id,
+            'user_id' => $vehicleAssignment->user_id,
+            'action' => 'REMOVED',
+        ]);
+
         return response()->json(['message' => 'Assignment removed successfully'], 200);
     }
 }
